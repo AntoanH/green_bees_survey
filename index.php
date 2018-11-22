@@ -44,7 +44,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             $choice['id'] = $row['choice_id'];
             $choice['choice'] = $row['choice'];
             $choice['input'] = $row['input'];
-            $next_question = is_null($row['next_question_number']) ? intval($row['question_number'])+1 : $row['next_question_number'];
+            $next_question = is_null($row['next_question_number']) ? intval($row['question_number']) + 1 : $row['next_question_number'];
             $choice['next_question_number'] = $next_question;
             $choices[] = $choice;
         }
@@ -144,20 +144,32 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <script>
                 $questions = <?php echo json_encode($questions); ?>;
                 $answers = [];
-                
+
                 function nextQuestion() {
                     $selected_choice = $("#choices_ul").find("input:radio:checked");
                     $choice_id = $($selected_choice).attr('choice_id');
-                    
-                    addAnswer($choice_id);
-                    
+
+                    $value = null;
+
+                    if ($($selected_choice).attr('has_input') != 0) {
+                        $input = $($selected_choice).next();
+                        $value = $($input).val();
+                    }
+
+                    addAnswer($choice_id, $value);
+
                     $next_question_number = $($selected_choice).attr('next_question');
-                    
+
                     $next_question = getQuestionByNumber($next_question_number);
-                    setQuestion($next_question);
+                    
+                    if($next_question === undefined) {
+                        submit_survey();
+                    } else {
+                        setQuestion($next_question);
+                    }
                 }
 
-                setQuestion(getQuestionByNumber(11));
+                setQuestion(getQuestionByNumber(87));
 
                 function setQuestion($question) {
                     $('#category_name').html($question['category']);
@@ -181,7 +193,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             $($li).append($div);
                         } else {
                             $radio = $("<input type='radio'  id='o" + $choice_number + "' choice_id='" + $choice['id'] + "' has_input='1' next_question='" + $next_question + "' name='s" + $question['question_number'] + "'>'");
-                            $input = $("<input type='text' oninput='enableInput("+$choice_number+")' id='os" + $choice['id'] + "' choice_id='" + $choice['id'] + "' name='ss" + $question['question_number'] + "' placeholder='" + $choice['choice'] + "' style='border: 0;padding: 10px;border-radius: 6px;float: left;margin-left: 45px;'>");
+                            $input = $("<input type='text' oninput='enableInput(" + $choice_number + ")' id='os" + $choice['id'] + "' choice_id='" + $choice['id'] + "' name='ss" + $question['question_number'] + "' placeholder='" + $choice['choice'] + "' style='border: 0;padding: 10px;border-radius: 6px;float: left;margin-left: 45px;'>");
                             $div = $("<div class='check'></div>");
                             //$label = $("<label for='o"+$choice_number+"'>"+$choice['choice']+"</label>");
                             $($li).append($radio);
@@ -190,23 +202,29 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         }
                         $($ul).append($li);
                     }
-
                 }
 
                 function enableInput($choice_id) {
-					console.log($choice_id);
-					// $('#o'+$choice_id).attr("checked","");
-					$('#o'+$choice_id).attr("checked","checked");
-					
-				}
-                function addAnswer($choice_id) {
-                    $answers.push($choice_id);
+                    console.log($choice_id);
+                    // $('#o'+$choice_id).attr("checked","");
+                    $('#o' + $choice_id).attr("checked", "checked");
+                }
+                
+                function addAnswer($choice_id, $value) {
+                    $answer = [];
+                    $answer[0] = $choice_id;
+                    $answer[1] = $value;
+                    $answers.push($answer);
                 }
 
                 function getQuestionByNumber($question_id) {
                     return $.grep($questions, function (n, i) {
                         return n['question_number'] == $question_id;
                     })[0];
+                }
+
+                function submit_survey() {
+                    alert("submitted");
                 }
 
                 function openCity(cityName) {
@@ -225,98 +243,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                 // Get the element with id="defaultOpen" and click on it
                 openCity('q0');
-
-                function completeAndRedirect() {
-                    console.log('completeAndRedirect');
-                    console.log($('#a-option').is(":checked"));
-                    console.log($('#b-option').is(":checked"));
-                    console.log($('#c-option').is(":checked"));
-                    console.log($('#d-option').is(":checked"));
-                    console.log($('#e-option').is(":checked"));
-                    console.log($('#f-option').is(":checked"));
-                    console.log($('#g-option').is(":checked"));
-                    console.log($('#h-option').is(":checked"));
-                    console.log($('#j-option').is(":checked"));
-                    console.log($('#k-option').is(":checked"));
-                    if ($('#a-option').is(":checked"))
-                        introduction = 6;
-                    else if ($('#b-option').is(":checked"))
-                        introduction = 2;
-                    else if ($('#c-option').is(":checked"))
-                        introduction = 10;
-                    else
-                        introduction = 0;
-
-                    if ($('#d-option').is(":checked"))
-                        staff = 10;
-                    else if ($('#e-option').is(":checked"))
-                        staff = 8;
-                    else if ($('#f-option').is(":checked"))
-                        staff = 6;
-                    else if ($('#g-option').is(":checked"))
-                        staff = 4;
-                    else if ($('#h-option').is(":checked"))
-                        staff = 2;
-                    else
-                        staff = 0;
-
-                    if ($('#j-option').is(":checked"))
-                        cleanliness = 10;
-                    else if ($('#k-option').is(":checked"))
-                        cleanliness = 8;
-                    else if ($('#l-option').is(":checked"))
-                        cleanliness = 6;
-                    else if ($('#m-option').is(":checked"))
-                        cleanliness = 4;
-                    else if ($('#n-option').is(":checked"))
-                        cleanliness = 2;
-                    else
-                        cleanliness = 0;
-
-                    if ($('#o-option').is(":checked"))
-                        valofmoney = 10;
-                    else if ($('#p-option').is(":checked"))
-                        valofmoney = 8;
-                    else if ($('#q-option').is(":checked"))
-                        valofmoney = 6;
-                    else if ($('#r-option').is(":checked"))
-                        valofmoney = 4;
-                    else if ($('#s-option').is(":checked"))
-                        valofmoney = 2;
-                    else
-                        valofmoney = 0;
-
-                    if ($('#t-option').is(":checked"))
-                        punctuality = 10;
-                    else if ($('#u-option').is(":checked"))
-                        punctuality = 8;
-                    else if ($('#v-option').is(":checked"))
-                        punctuality = 6;
-                    else if ($('#w-option').is(":checked"))
-                        punctuality = 4;
-                    else if ($('#x-option').is(":checked"))
-                        punctuality = 2;
-                    else
-                        punctuality = 0;
-
-                    $.get("/inc/rating.php", {'vals[]': [introduction, staff, cleanliness, valofmoney, punctuality], 'name': $('#name').val(), 'email': $('#email').val(), 'phone': $('#phone').val(), 'feedback1': $('#feed1').val(), 'feedback2': $('#feed2').val(), 'message': $('#message1').val()}
-                    , function (result) {
-                        $('#result').text(result);
-                        if (result < 2)
-                            $('#result').css("background", "white");
-                        else if (result < 4)
-                            $('#result').css("background", "red");
-                        else if (result < 6)
-                            $('#result').css("background", "orange");
-                        else if (result < 8)
-                            $('#result').css("background", "yellow");
-                        else if (result <= 10)
-                            $('#result').css("background", "green");
-                        // if(result==10) $('#result').css("background","green");
-                        openCity('thankyou');
-                        console.log(result);
-                    });
-                }
 
             </script>
 
