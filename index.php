@@ -233,7 +233,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 function submit_survey() {
                     if ($company_name ===    null || $company_name.length < 2) {
                         $company_name = prompt("Please enter company name", "");
-
+                        $results = [];
+                        
                         if ($company_name != null && $company_name.length > 1) {
                             $results[0] = $company_name;
                             $results[1] = true;
