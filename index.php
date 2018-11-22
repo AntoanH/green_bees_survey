@@ -140,6 +140,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                 </div>
                                             </div>
                                             <input type="button" onclick="nextQuestion()" value="Next"></button>
+                                            <input type="button" onclick="saveAndShare()" value="Get shareable link"></button>
                                             <!--<input type="button" onclick="openCity('q0')" style="background:grey" value="Previous"></button>-->
                                         </div>
                                     </div>

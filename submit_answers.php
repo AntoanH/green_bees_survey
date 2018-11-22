@@ -1,6 +1,6 @@
 <?php
 
-
+error_reporting(4);
 if(isset($_POST['results'])){
 	include("connection.php");
 	
@@ -19,17 +19,27 @@ if(isset($_POST['results'])){
 		$current_question=$answers['current_question'];
 		
 		// if(!empty($answers[4])) $question_number=$answers[0];
-		if(strlen($answers['session_id']==10)) $session_id=$answers['session_id'];
-		else{
+		if(strlen($answers['session_id'])==10){
+			$session_id=$answers['session_id'];
+			$sql="Select id from sessions where hash like '".$session_id."' limit 1;";
+			// echo $sql;exit;
+			if($res=$con->query($sql)){
+			print_r($session_id);exit;
+				if($res->num_rows==1){
+					while ($row = $res->fetch_assoc()) {
+						$session_id=$row['id'];
+					}
+				}
+			}
+		}else{
 			$session_id=generateRandomString();
 		
 			$sql="INSERT into sessions (`hash`,`question_number`,`company_name`,`completed`) values ('".$session_id."','".$current_question."','".$company."',".$completed.");";
-			if($con->query($sql)){
-				
-			}else{
-				echo "Error0: ".$con->error;
-			}
-		}	
+			// echo $sql;exit;
+			$con->query($sql);
+			$session_id=$con->insert_id;
+		}
+		
 		
 		// if($answers[1]) $sflag=1;
 		foreach($answers['answers'] as $k=>$v){
