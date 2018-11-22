@@ -24,6 +24,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			$questions[]=$row;
 		}
 		// exit;
+                if(isset($_GET['debug'])) {
+                    echo "<pre>";
+                    var_dump($questions);
+                    echo "</pre>";
+                }
 	}else{
 		echo "ERROR ".$con->error;exit;
 	}
