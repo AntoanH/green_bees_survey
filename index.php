@@ -237,7 +237,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         if ($company_name != null && $company_name.length > 1) {
                             $results[0] = $company_name;
                             $results[1] = true;
-                            $results[2] = <?php echo $session_id; ?>;
+                            $results[2] = '<?php echo $session_id; ?>';
                             $results[3] = $answers;
                             
                             $.post('submit_answers.php', {
