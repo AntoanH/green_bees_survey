@@ -9,6 +9,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <html>
     <?php
     $questions = [];
+    
+    $session_id = null;
+    
+    if(isset($_GET['s']) && strlen($_GET['s']) == 10) {
+        $session_id = $_GET['s'];
+    }
+    
     $con = mysqli_connect("51.75.249.227", "bee1", "12345", "green_it_survey") or die("Error " . mysqli_error($connection));
     if ($con->connect_errno) {
         die('Connect Error (' . $con->connect_errno . ') ' . $con->connect_error);
@@ -144,6 +151,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <script>
                 $questions = <?php echo json_encode($questions); ?>;
                 $answers = [];
+                $company_name = "";
 
                 function nextQuestion() {
                     $selected_choice = $("#choices_ul").find("input:radio:checked");
@@ -161,8 +169,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     $next_question_number = $($selected_choice).attr('next_question');
 
                     $next_question = getQuestionByNumber($next_question_number);
-                    
-                    if($next_question === undefined) {
+
+                    if ($next_question === undefined) {
                         submit_survey();
                     } else {
                         setQuestion($next_question);
@@ -184,16 +192,15 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         $li = $("<li></li>");
 
                         if ($choice['input'] == "0") {
-                            $next_question = $choice['next_question_number'] === null ? ++parseInt($question['question_number']) : $choice['next_question_number'];
-                            $radio = $("<input type='radio' id='o" + $choice_number + "' choice_id='" + $choice['id'] + "' has_input='0' next_question='" + $next_question + "' name='s" + $question['question_number'] + "'>'");
+                            $radio = $("<input type='radio' id='o" + $choice_number + "' choice_id='" + $choice['id'] + "' has_input='0' next_question='" + $choice['next_question_number'] + "' name='s" + $question['question_number'] + "'>'");
                             $label = $("<label for='o" + $choice_number + "'>" + $choice['choice'] + "</label>");
                             $div = $("<div class='check'></div>");
                             $($li).append($radio);
                             $($li).append($label);
                             $($li).append($div);
                         } else {
-                            $radio = $("<input type='radio'  id='o" + $choice_number + "' choice_id='" + $choice['id'] + "' has_input='1' next_question='" + $next_question + "' name='s" + $question['question_number'] + "'>'");
-                            $input = $("<input type='text' oninput='enableInput(" + $choice_number + ")' id='os" + $choice['id'] + "' choice_id='" + $choice['id'] + "' name='ss" + $question['question_number'] + "' placeholder='" + $choice['choice'] + "' style='border: 0;padding: 10px;border-radius: 6px;float: left;margin-left: 45px;'>");
+                            $radio = $("<input type='radio' id='o" + $choice_number + "' choice_id='" + $choice['id'] + "' has_input='1' next_question='" + $choice['next_question_number'] + "' name='s" + $question['question_number'] + "'>'");
+                            $input = $("<input id='input_choice' type='text' oninput='enableInput(" + $choice_number + ")' id='os" + $choice['id'] + "' choice_id='" + $choice['id'] + "' name='ss" + $question['question_number'] + "' placeholder='" + $choice['choice'] + "' style='border: 0;padding: 10px;border-radius: 6px;float: left;margin-left: 45px;'>");
                             $div = $("<div class='check'></div>");
                             //$label = $("<label for='o"+$choice_number+"'>"+$choice['choice']+"</label>");
                             $($li).append($radio);
@@ -207,9 +214,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 function enableInput($choice_id) {
                     console.log($choice_id);
                     // $('#o'+$choice_id).attr("checked","");
-                    $('#o' + $choice_id).attr("checked", "checked");
+                    $('#o' + $choice_id).prop("checked", "checked");
                 }
-                
+
                 function addAnswer($choice_id, $value) {
                     $answer = [];
                     $answer[0] = $choice_id;
@@ -224,7 +231,26 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 }
 
                 function submit_survey() {
-                    alert("submitted");
+                    if ($company_name ===    null || $company_name.length < 2) {
+                        $company_name = prompt("Please enter company name", "");
+
+                        if ($company_name != null && $company_name.length > 1) {
+                            $results[0] = $company_name;
+                            $results[1] = true;
+                            $results[2] = <?php echo $session_id; ?>;
+                            $results[3] = $answers;
+                            
+                            $.post('submit_answers.php', {
+                               'results' : $results 
+                            }, function(res) {
+                                console.log(res);
+                            });
+                        }
+                    }
+                }
+
+                function saveAndShare() {
+                    
                 }
 
                 function openCity(cityName) {
