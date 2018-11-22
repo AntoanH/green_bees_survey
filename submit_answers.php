@@ -5,6 +5,7 @@ if(isset($_POST['results'])){
 	include("connection.php");
 	
 	$answers=$_POST['results'];
+        print_r($answers);
 	$answersstring='';
 	// print_r($answers);exit;
 	// foreach($answers as $k=>$v){
@@ -20,10 +21,11 @@ if(isset($_POST['results'])){
 		// if(!empty($answers[4])) $question_number=$answers[0];
 		if(!empty($answers['session_id'])) $session_id=$answers['session_id'];
 		else{
-			$session_id=generateRandomString();
+			$session_id = generateRandomString();
 		
-			$sql="INSERT into sessions (`hash`,`question_number`,`company_name`,`completed`) values ('".$session_id."','".$question_number."','".$company."',".$completed.");";
-			$con->$query($sql);
+			$sql="INSERT into sessions (`hash`,`question_number`,`company_name`,`completed`) values ('".$session_id."','".$current_question."','".$company."',".$completed.");";
+                        echo $sql;
+			$con->query($sql);
 		}	
 		
 		
