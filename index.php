@@ -9,13 +9,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <html>
     <?php
     $questions = [];
-    
+
     $session_id = null;
-    
-    if(isset($_GET['s']) && strlen($_GET['s']) == 10) {
+
+    if (isset($_GET['s']) && strlen($_GET['s']) == 10) {
         $session_id = $_GET['s'];
     }
-    
+
     $con = mysqli_connect("51.75.249.227", "bee1", "12345", "green_it_survey") or die("Error " . mysqli_error($connection));
     if ($con->connect_errno) {
         die('Connect Error (' . $con->connect_errno . ') ' . $con->connect_error);
@@ -182,7 +182,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                 function setQuestion($question) {
                     $current_question = $question['question_number'];
-                    
+
                     $('#category_name').html($question['category']);
                     $('#question_label').html($question['question']);
 
@@ -232,37 +232,42 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         return n['question_number'] == $question_id;
                     })[0];
                 }
-                
+
                 function complete_survey() {
                     $current_question = "0";
                     submit_survey();
                 }
-                
+
                 function saveAndShare() {
                     submit_survey();
                 }
-                
+
                 function submit_survey() {
-                    if ($company_name ===    null || $company_name.length < 2) {
+                    if ($company_name === null || $company_name.length < 2) {
                         $company_name = prompt("Please enter company name", "");
                         $results = [];
-                        
+
                         if ($company_name != null && $company_name.length > 1) {
                             $results['company_name'] = $company_name;
                             $results['current_question'] = $current_question;
                             $results['session_id'] = '<?php echo $session_id; ?>';
                             $results['answers'] = $answers;
-                            
+
                             $.post('submit_answers.php', {
-                               'results' : $results 
-                            }, function(res) {
+                                results: {
+                                    company_name: $company_name,
+                                    current_question: $current_question,
+                                    session_id: '<?php echo $session_id; ?>',
+                                    answers: $answers
+                                }
+                            }, function (res) {
                                 console.log(res);
                             });
                         }
                     }
                 }
 
-                
+
 
                 function openCity(cityName) {
                     var i, tabcontent, tablinks;
