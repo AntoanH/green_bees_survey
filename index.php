@@ -8,7 +8,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 <html>
     <?php
-    $questions = [];
+    include_once('data.php');
 
     $session_id = null;
 
@@ -16,54 +16,54 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         $session_id = $_GET['s'];
     }
 
-    $con = mysqli_connect("51.75.249.227", "bee1", "12345", "green_it_survey") or die("Error " . mysqli_error($connection));
-    if ($con->connect_errno) {
-        die('Connect Error (' . $con->connect_errno . ') ' . $con->connect_error);
-    }
-
-    $sql = "Select *,choices.id as choice_id from questions left join choices on questions.question_number=choices.question_number
-			left join categories on questions.category_id=categories.id
-			left join relations on choices.id=relations.id_choice;";
-    if ($res = $con->query($sql)) {
-
-        $question = [];
-        $choices = [];
-        $choice = [];
-        $temp = "0";
-        while ($row = $res->fetch_assoc()) {
-            if ($row['question_number'] != $temp) {
-                $temp = $row['question_number'];
-                if (!empty($choices) > 0) {
-                    $question['choices'] = $choices;
-                }
-                if (!empty($question)) {
-                    $questions[] = $question;
-                }
-                $question = [];
-                $choices = [];
-                $question['question_number'] = $row['question_number'];
-                $question['question'] = $row['question'];
-                $question['category_id'] = $row['category_id'];
-                $question['category'] = $row['category'];
-                $question['sub_category'] = $row['sub_category'];
-            }
-            $choice = [];
-            $choice['id'] = $row['choice_id'];
-            $choice['choice'] = $row['choice'];
-            $choice['input'] = $row['input'];
-            $next_question = is_null($row['next_question_number']) ? intval($row['question_number']) + 1 : $row['next_question_number'];
-            $choice['next_question_number'] = $next_question;
-            $choices[] = $choice;
-        }
-        if (isset($_GET['debug'])) {
-            echo "<pre>";
-            var_dump($questions);
-            echo "</pre>";
-        }
-    } else {
-        echo "ERROR " . $con->error;
-        exit;
-    }
+//    $con = mysqli_connect("51.75.249.227", "bee1", "12345", "green_it_survey") or die("Error " . mysqli_error($connection));
+//    if ($con->connect_errno) {
+//        die('Connect Error (' . $con->connect_errno . ') ' . $con->connect_error);
+//    }
+//
+//    $sql = "Select *,choices.id as choice_id from questions left join choices on questions.question_number=choices.question_number
+//			left join categories on questions.category_id=categories.id
+//			left join relations on choices.id=relations.id_choice;";
+//    if ($res = $con->query($sql)) {
+//
+//        $question = [];
+//        $choices = [];
+//        $choice = [];
+//        $temp = "0";
+//        while ($row = $res->fetch_assoc()) {
+//            if ($row['question_number'] != $temp) {
+//                $temp = $row['question_number'];
+//                if (!empty($choices) > 0) {
+//                    $question['choices'] = $choices;
+//                }
+//                if (!empty($question)) {
+//                    $questions[] = $question;
+//                }
+//                $question = [];
+//                $choices = [];
+//                $question['question_number'] = $row['question_number'];
+//                $question['question'] = $row['question'];
+//                $question['category_id'] = $row['category_id'];
+//                $question['category'] = $row['category'];
+//                $question['sub_category'] = $row['sub_category'];
+//            }
+//            $choice = [];
+//            $choice['id'] = $row['choice_id'];
+//            $choice['choice'] = $row['choice'];
+//            $choice['input'] = $row['input'];
+//            $next_question = is_null($row['next_question_number']) ? intval($row['question_number']) + 1 : $row['next_question_number'];
+//            $choice['next_question_number'] = $next_question;
+//            $choices[] = $choice;
+//        }
+//        if (isset($_GET['debug'])) {
+//            //echo "<pre>";
+//            echo json_encode($questions);
+//            //echo "</pre>";
+//        }
+//    } else {
+//        echo "ERROR " . $con->error;
+//        exit;
+//    }
     ?>
     <head>
         <title>Survey of Green IT practices</title>
@@ -249,10 +249,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         $results = [];
 
                         if ($company_name != null && $company_name.length > 1) {
-                            $results['company_name'] = $company_name;
-                            $results['current_question'] = $current_question;
-                            $results['session_id'] = '<?php echo $session_id; ?>';
-                            $results['answers'] = $answers;
+//                            $results['company_name'] = $company_name;
+//                            $results['current_question'] = $current_question;
+//                            $results['session_id'] = '<?php //echo $session_id; ?>';
+//                            $results['answers'] = $answers;
 
                             $.post('submit_answers.php', {
                                 results: {
