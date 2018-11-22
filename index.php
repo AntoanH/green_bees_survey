@@ -152,6 +152,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 $questions = <?php echo json_encode($questions); ?>;
                 $answers = [];
                 $company_name = "";
+                $current_question = "0";
 
                 function nextQuestion() {
                     $selected_choice = $("#choices_ul").find("input:radio:checked");
@@ -171,7 +172,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     $next_question = getQuestionByNumber($next_question_number);
 
                     if ($next_question === undefined) {
-                        submit_survey();
+                        complete_survey();
                     } else {
                         setQuestion($next_question);
                     }
@@ -180,6 +181,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 setQuestion(getQuestionByNumber(87));
 
                 function setQuestion($question) {
+                    $current_question = $question['question_number'];
+                    
                     $('#category_name').html($question['category']);
                     $('#question_label').html($question['question']);
 
@@ -229,17 +232,26 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         return n['question_number'] == $question_id;
                     })[0];
                 }
-
+                
+                function complete_survey() {
+                    $current_question = "0";
+                    submit_survey();
+                }
+                
+                function saveAndShare() {
+                    submit_survey();
+                }
+                
                 function submit_survey() {
                     if ($company_name ===    null || $company_name.length < 2) {
                         $company_name = prompt("Please enter company name", "");
                         $results = [];
                         
                         if ($company_name != null && $company_name.length > 1) {
-                            $results[0] = $company_name;
-                            $results[1] = true;
-                            $results[2] = '<?php echo $session_id; ?>';
-                            $results[3] = $answers;
+                            $results['company_name'] = $company_name;
+                            $results['current_question'] = $current_question;
+                            $results['session_id'] = '<?php echo $session_id; ?>';
+                            $results['answers'] = $answers;
                             
                             $.post('submit_answers.php', {
                                'results' : $results 
@@ -250,9 +262,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     }
                 }
 
-                function saveAndShare() {
-                    
-                }
+                
 
                 function openCity(cityName) {
                     var i, tabcontent, tablinks;
