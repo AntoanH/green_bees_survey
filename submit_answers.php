@@ -44,7 +44,7 @@ if(isset($_POST['results'])){
 		// if($answers[1]) $sflag=1;
 		foreach($answers['answers'] as $k=>$v){
 			// print_r($v);exit;
-			$sql="INSERT into answers (`session_id`,`choice_id`,`input_value`) values ('".$session_id."','".$v[0]."','".$v[1]."');";
+			$sql="INSERT into answers (`session_id`,`question_number`, `choice_id`,`input_value`) values ('".$session_id."','".$v[1]."','".$v[0]."','".$v[2]."');";
 		
 			if($con->query($sql)){
 				echo "Inserted successfully";

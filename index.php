@@ -9,11 +9,27 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <html>
     <?php
     include_once('data.php');
-
+    
+    $old_answers = [];
+    
     $session_id = null;
-
+    
     if (isset($_GET['s']) && strlen($_GET['s']) == 10) {
         $session_id = $_GET['s'];
+        $con = mysqli_connect("51.75.249.227", "bee1", "12345", "green_it_survey") or die("Error " . mysqli_error($connection));
+        if ($con->connect_errno) {
+            die('Connect Error (' . $con->connect_errno . ') ' . $con->connect_error);
+        }
+
+        $sql = "Select s.id, s.company_name, a.question_number, a.choice_id, a.input_value from sessions s "
+                . "left join answers a on s.id = a.session_id "
+                . "where s.hash like '".$session_id."';";
+                //. " and s.question_number != 0;";
+        if ($res = $con->query($sql)) {
+            while ($row = $res->fetch_assoc()) {
+                $old_answers[] = $row;
+            }
+        }
     }
 
 //    $con = mysqli_connect("51.75.249.227", "bee1", "12345", "green_it_survey") or die("Error " . mysqli_error($connection));
@@ -141,7 +157,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                             </div>
                                             <input type="button" onclick="nextQuestion()" value="Next"></button>
                                             <input type="button" onclick="saveAndShare()" value="Get shareable link"></button>
-                                            <!--<input type="button" onclick="openCity('q0')" style="background:grey" value="Previous"></button>-->
+                                            <input type="button" onclick="prevQuestion()" value="Previous"></button>
                                         </div>
                                     </div>
                             </form>
@@ -152,9 +168,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <script>
                 $questions = <?php echo json_encode($questions); ?>;
                 $answers = [];
-                $company_name = "";
+                $company_name = "<?php echo $old_answers[0]['company_name']; ?>";
                 $current_question = "0";
-
+                $old_answers = <?php echo json_encode($old_answers); ?>;
+                
                 function nextQuestion() {
                     $selected_choice = $("#choices_ul").find("input:radio:checked");
                     $choice_id = $($selected_choice).attr('choice_id');
@@ -179,7 +196,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     }
                 }
 
-                setQuestion(getQuestionByNumber(87));
+                setQuestion(getQuestionByNumber(85));
+
+                function alreadyAnswered($choice_id) {
+                    $results = $.grep($old_answers, function (n, i) {
+                        return n['choice_id'] == $choice_id;
+                    });
+                    return $results.length > 0 ? $results[0]['input_value'] : false;
+                }
 
                 function setQuestion($question) {
                     $current_question = $question['question_number'];
@@ -193,18 +217,27 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     for ($choice_number = 0; $choice_number < $question['choices'].length; $choice_number++) {
 
                         $choice = $question['choices'][$choice_number];
+                        
+                        $selected = "";
+                        
+                        $old_value = alreadyAnswered($choice['id']);
+                        console.log($old_value);
+                        if($old_value || $old_value === "") {
+                            $selected = "checked='checked'";
+                        }
+                        
                         $li = $("<li></li>");
 
                         if ($choice['input'] == "0") {
-                            $radio = $("<input type='radio' id='o" + $choice_number + "' choice_id='" + $choice['id'] + "' has_input='0' next_question='" + $choice['next_question_number'] + "' name='s" + $question['question_number'] + "'>'");
+                            $radio = $("<input type='radio' id='o" + $choice_number + "' choice_id='" + $choice['id'] + "' has_input='0' next_question='" + $choice['next_question_number'] + "' name='s" + $question['question_number'] + "' "+$selected+">'");
                             $label = $("<label for='o" + $choice_number + "'>" + $choice['choice'] + "</label>");
                             $div = $("<div class='check'></div>");
                             $($li).append($radio);
                             $($li).append($label);
                             $($li).append($div);
                         } else {
-                            $radio = $("<input type='radio' id='o" + $choice_number + "' choice_id='" + $choice['id'] + "' has_input='1' next_question='" + $choice['next_question_number'] + "' name='s" + $question['question_number'] + "'>'");
-                            $input = $("<input id='input_choice' type='text' oninput='enableInput(" + $choice_number + ")' id='os" + $choice['id'] + "' choice_id='" + $choice['id'] + "' name='ss" + $question['question_number'] + "' placeholder='" + $choice['choice'] + "' style='border: 0;padding: 10px;border-radius: 6px;float: left;margin-left: 45px;'>");
+                            $radio = $("<input type='radio' id='o" + $choice_number + "' choice_id='" + $choice['id'] + "' has_input='1' next_question='" + $choice['next_question_number'] + "' name='s" + $question['question_number'] + "' "+$selected+">'");
+                            $input = $("<input id='input_choice' type='text' oninput='enableInput(" + $choice_number + ")' id='os" + $choice['id'] + "' choice_id='" + $choice['id'] + "' name='ss" + $question['question_number'] + "' placeholder='" + $choice['choice'] + "' value='"+$old_value+"' style='border: 0;padding: 10px;border-radius: 6px;float: left;margin-left: 45px;'>");
                             $div = $("<div class='check'></div>");
                             //$label = $("<label for='o"+$choice_number+"'>"+$choice['choice']+"</label>");
                             $($li).append($radio);
@@ -216,15 +249,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 }
 
                 function enableInput($choice_id) {
-                    console.log($choice_id);
-                    // $('#o'+$choice_id).attr("checked","");
                     $('#o' + $choice_id).prop("checked", "checked");
                 }
 
                 function addAnswer($choice_id, $value) {
                     $answer = [];
                     $answer[0] = $choice_id;
-                    $answer[1] = $value;
+                    $answer[1] = $current_question;
+                    $answer[2] = $value;
                     $answers.push($answer);
                 }
 
