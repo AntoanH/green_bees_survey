@@ -143,19 +143,21 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             </div>
             <script>
                 $questions = <?php echo json_encode($questions); ?>;
-
+                $answers = [];
+                
                 function nextQuestion() {
                     $selected_choice = $("#choices_ul").find("input:radio:checked");
                     $choice_id = $($selected_choice).attr('choice_id');
                     
-                    //addAnswer($choice_id);
+                    addAnswer($choice_id);
                     
                     $next_question_number = $($selected_choice).attr('next_question');
                     
                     $next_question = getQuestionByNumber($next_question_number);
-                    console.log($next_question);
                     setQuestion($next_question);
                 }
+
+                setQuestion(getQuestionByNumber(11));
 
                 function setQuestion($question) {
                     $('#category_name').html($question['category']);
@@ -171,24 +173,28 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                         if ($choice['input'] == "0") {
                             $next_question = $choice['next_question_number'] === null ? ++parseInt($question['question_number']) : $choice['next_question_number'];
-                            $input = $("<input type='radio' id='o" + $choice_number + "' choice_id='" + $choice['id'] + "' next_question='" + $next_question + "' name='s" + $question['question_number'] + "'>'");
+                            $radio = $("<input type='radio' id='o" + $choice_number + "' choice_id='" + $choice['id'] + "' has_input='0' next_question='" + $next_question + "' name='s" + $question['question_number'] + "'>'");
                             $label = $("<label for='o" + $choice_number + "'>" + $choice['choice'] + "</label>");
                             $div = $("<div class='check'></div>");
-                            $($li).append($input);
+                            $($li).append($radio);
                             $($li).append($label);
                             $($li).append($div);
                         } else {
+                            $radio = $("<input type='radio' id='o" + $choice_number + "' choice_id='" + $choice['id'] + "' has_input='1' next_question='" + $next_question + "' name='s" + $question['question_number'] + "'>'");
                             $input = $("<input type='text' id='o" + $choice_number + "' choice_id='" + $choice['id'] + "' name='s" + $question['question_number'] + "' placeholder='" + $choice['choice'] + "'>");
+                            $div = $("<div class='check'></div>");
                             //$label = $("<label for='o"+$choice_number+"'>"+$choice['choice']+"</label>");
+                            $($li).append($radio);
                             $($li).append($input);
+                            $($li).append($div);
                         }
                         $($ul).append($li);
                     }
 
                 }
 
-                function getQuestionByChoiceId($choice_id) {
-
+                function addAnswer($choice_id) {
+                    $answers.push($choice_id);
                 }
 
                 function getQuestionByNumber($question_id) {
