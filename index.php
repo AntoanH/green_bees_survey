@@ -5,32 +5,51 @@ License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
 -->
 <!doctype html>
+
 <html>
+<?php
+	$con = mysqli_connect("51.75.249.227", "bee1", "12345", "green_it_survey") or die("Error " . mysqli_error($connection));
+	if ($con->connect_errno) {
+		die('Connect Error (' . $con->connect_errno . ') '. $con->connect_error);
+	}
+	
+	$sql="Select * from questions left join choices on questions.question_number=choices.question_number
+			left join categories on questions.category_id=categories.id
+			left join relations on choices.id=relations.id_choice;";
+	if($res=$con->query($sql)){
+		while($row = $res->fetch_assoc()){
+			// echo "ID: " . $row["ID"]. " - Name: " . $row["name"]. "<br>";
+			// print_r($row);echo "<br>";
+		// exit;
+			$questions[]=$row;
+		}
+		// exit;
+	}else{
+		echo "ERROR ".$con->error;exit;
+	}
+?>
 <head>
-<title>165Cteam Rating Survey Form</title>
+<title>Survey of Green IT practices</title>
 <!-- meta-tags -->
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
-<meta name="keywords" content="165cteam rate rating review feedback" />
+<meta name="keywords" content="survey, organization, design4green, best practices" />
 <!-- //meta-tags -->
-<link href="//fonts.googleapis.com/css?family=Ubuntu:300,400,500,700" rel="stylesheet">
-<link href='//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-<link href="css/font-awesome.css" rel="stylesheet"> <!-- Font-awesome-CSS --> 
 <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
 <script src="js/jquery-2.1.4.min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/raccordion.css" />
     <script type="text/javascript">
         $(window).load(function () {
-            $('#accordion-wrapper').raccordion({
-                speed: 1000,
-                sliderWidth: 700,
-                sliderHeight: 300,
-                autoCollapse: false
-            });
-			setTimeout(function(){
+            // $('#accordion-wrapper').raccordion({
+                // speed: 10,
+                // sliderWidth: 350,
+                // sliderHeight: 300,
+                // autoCollapse: false
+            // });
+			// setTimeout(function(){
 				$('#firstslide').addClass('active');
 				$('#firstslide .caption').css('opacity',1);
-			},1500);
+			// },1500);
         }); 
     </script>
 	<style>
@@ -99,454 +118,116 @@ div[data-anim~=base] {
 </style>
 </head>
 <body>
+
 <div class="content" id="Main-Content">
-	<h1>Rating Survey Form</h1>
 	<div class="wrapper">
 		<div id="accordion-wrapper">
-            <div class="slide" onclick="openCity('expectation')">
-                <img src="images/1.jpg" alt="image" />
-				<div class="caption">
-                    <div class="pricing">
-							<div class="pricing-top green-top">
-								<i class="fa fa-check-square-o" aria-hidden="true"></i>
-							</div>
-							<div class="pricing-bottom">
-								<div class="pricing-bottom-bottom">
-									<h2>How would you rate for our services</h2>
-									<p>We are always trying to improve our services by your indispensable feedback. </p>
-								</div>
-								<div class="buy-button green-button">
-								<ul>
-									<li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-									<li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-									<li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-									<li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-									<li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-								</ul>
-								</div>
-							</div>
-					</div>
-                </div>
-            </div>
             <div id="firstslide" class="slide slide-two-w3ls">
-                <img src="images/3.jpg" alt="image" />
 				<div class="caption">
 					<form action="javascript:completeAndRedirect();" method="post">
-                    <div id="expectation" class="pricing tabcontent">
-					  	<div class="pricing-top blue-top">
-								<h3>Expectation</h3>
-							</div>
-							<div class="pricing-bottom two">
-								<div class="pricing-bottom-bottom">
-									<div class="content-wthree2">
-										<div class="grid-w3layouts1">
-											<div class="w3-agile1">
-												<label class="rating">Did 165Cteam meet your expectations?</label>
-												<ul>
-												<?php 
-													// $alpha="abcdefghijklmnopqrstuvwxyz";
-													// $alphacount=0;
-													// for($i=5;$i>=1;$i--){
-														
-														// echo '
-													// <li>
-														// <input type="radio" id="'.substr($alpha,$alphacount,1).'-option" name="selector1">
-														// <label for="'.substr($alpha,$alphacount++,1).'-option">
-														// ';
-														// for($j=0;$j<$i;$j++){
-															// echo '
-															// <i class="fa fa-star-o" aria-hidden="true"></i>
-															// ';
-														// }
-														// echo '
-														// </label>
-														// <div class="check">';
-														// if($i==4||$i==3) echo '<div class="inside"></div>';
-														// echo '</div>
-													// </li>
-													// ';
-													// }
-													?><li>
-														<input type="radio" id="a-option" name="selector1" onclick="setTimeout(function(){openCity('staff');},500)">
-														<label for="a-option">
-															Yes
-														</label>
-														<div class="check"></div>
-													</li>
-													<li>
-														<input type="radio" id="b-option" name="selector1" onclick="setTimeout(function(){openCity('staff');},500)">
-														<label for="b-option">
-															No
-														</label>
-														<div class="check"><div class="inside"></div></div>
-													</li>
-													<li>
-														<input type="radio" id="c-option" name="selector1" onclick="setTimeout(function(){openCity('staff');},500)">
-														<label for="c-option">
-															It exceeds my expectations
-														</label>
-														<div class="check"><div class="inside"></div></div>
-													</li>
-													
-												</ul>
-												<div class="clear"></div>
-											</div>	
-										</div>
+					
+                    <div id="q0" class="pricing tabcontent">
+					  	<div class="pricing-top blue-top" >
+							<h3 id="category">Green IT Survey</h3>
+						</div>
+						<div class="pricing-bottom two">
+							<div class="pricing-bottom-bottom">
+								<div class="content-wthree2">
+									<div class="grid-w3layouts1">
+										<div class="w3-agile1">
+											<label class="rating">
+												<p>The purpose of this survey is to evaluate the impact of companies in terms of setting up eco-design digital services.<br></p>
+												<p>Thank you for your interest in providing valuable insight about Green IT and good IT practices regarding the environment.<br></p>
+												<p>Please take your time to answer all the questions under your scope and you may share the link with your co-wprkers, at any time.</p>
+											</label>
+											
+											<div class="clear"></div>
+										</div>	
 									</div>
-									<input type="button" onclick="openCity('staff')" id="nextbtn" value="Next"></button>
-									<input type="submit" name="submit" id="submitfeedback" style="display:none" value="Send Feedback">
-								
 								</div>
+								<input type="button" onclick="openCity('q1')" id="nextbtn" value="Next"></button>
+								<input type="submit" name="submit" id="submitfeedback" style="display:none" value="Send Feedback">
+							
 							</div>
 						</div>
-						<div id="staff" class="pricing tabcontent">
-					  	<div class="pricing-top blue-top">
-								<h3>Staff Rating</h3>
-							</div>
-							<div class="pricing-bottom two">
-								<div class="pricing-bottom-bottom">
-									<div class="content-wthree2">
-										<div class="grid-w3layouts1">
-											<div class="w3-agile1">
-												<label class="rating">Staff</label>
-												<ul>
-													<li>
-														<input type="radio" id="d-option" name="selector2" onclick="setTimeout(function(){openCity('cleanliness');},500)">
-														<label for="d-option">
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-													<i class="fa fa-star-o" aria-hidden="true"></i> 
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-														</label>
-														<div class="check"></div>
-													</li>
-													<li>
-														<input type="radio" id="e-option" name="selector2" onclick="setTimeout(function(){openCity('cleanliness');},500)">
-														<label for="e-option">
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i> 
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-														</label>
-														<div class="check"><div class="inside"></div></div>
-													</li>
-													<li>
-														<input type="radio" id="f-option" name="selector2" onclick="setTimeout(function(){openCity('cleanliness');},500)">
-														<label for="f-option">
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i> 
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-														</label>
-														<div class="check"><div class="inside"></div></div>
-													</li>
-													<li>
-														<input type="radio" id="g-option" name="selector2" onclick="setTimeout(function(){openCity('cleanliness');},500)">
-														<label for="g-option">
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i> 
-														</label>
-														<div class="check"></div>
-													</li>
-													<li>
-														<input type="radio" id="h-option" name="selector2" onclick="setTimeout(function(){openCity('cleanliness');},500)">
-														<label for="h-option">
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-														</label>
-														<div class="check"></div>
-													</li>
-												</ul>
-												<div class="clear"></div>
-											</div>	
-										</div>
-									</div>
-									<input type="button" onclick="openCity('cleanliness')" value="Next"></button>
-									<input type="button" onclick="openCity('expectation')" style="background:grey" value="Previous"></button>
-									
-
-								</div>
-							</div>
-						</div>
-						<div id="cleanliness" class="pricing tabcontent">
-					  	<div class="pricing-top blue-top">
-								<h3>Cleanliness Rating</h3>
-							</div>
-							<div class="pricing-bottom two">
-								<div class="pricing-bottom-bottom">
-									<div class="content-wthree2">
-										<div class="grid-w3layouts1">
-											<div class="w3-agile1">
-												<label class="rating">Cleanliness</label>
-												<ul>
-													<li>
-														<input type="radio" id="j-option" name="selector3" onclick="setTimeout(function(){openCity('valofmoney');},500)">
-														<label for="j-option">
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-													<i class="fa fa-star-o" aria-hidden="true"></i> 
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-														</label>
-														<div class="check"></div>
-													</li>
-													<li>
-														<input type="radio" id="k-option" name="selector3" onclick="setTimeout(function(){openCity('valofmoney');},500)">
-														<label for="k-option">
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i> 
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-														</label>
-														<div class="check"><div class="inside"></div></div>
-													</li>
-													<li>
-														<input type="radio" id="l-option" name="selector3" onclick="setTimeout(function(){openCity('valofmoney');},500)">
-														<label for="l-option">
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i> 
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-														</label>
-														<div class="check"><div class="inside"></div></div>
-													</li>
-													<li>
-														<input type="radio" id="m-option" name="selector3" onclick="setTimeout(function(){openCity('valofmoney');},500)">
-														<label for="m-option">
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i> 
-														</label>
-														<div class="check"></div>
-													</li>
-													<li>
-														<input type="radio" id="n-option" name="selector3" onclick="setTimeout(function(){openCity('valofmoney');},500)">
-														<label for="n-option">
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-														</label>
-														<div class="check"></div>
-													</li>
-												</ul>
-												<div class="clear"></div>
-											</div>	
-										</div>
-									</div>
-									<input type="button" onclick="openCity('valofmoney')" value="Next"></button>
-									<input type="button" onclick="openCity('staff')" style="background:grey" value="Previous"></button>
-									
-
-								</div>
-							</div>
-						</div>
-						<div id="valofmoney" class="pricing tabcontent">
-					  	<div class="pricing-top blue-top">
-								<h3>Value of money</h3>
-							</div>
-							<div class="pricing-bottom two">
-								<div class="pricing-bottom-bottom">
-									<div class="content-wthree2">
-										<div class="grid-w3layouts1">
-											<div class="w3-agile1">
-												<label class="rating">Value of money</label>
-												<ul>
-													<li>
-														<input type="radio" id="o-option" name="selector4" onclick="setTimeout(function(){openCity('punctuality');},500)">
-														<label for="o-option">
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-													<i class="fa fa-star-o" aria-hidden="true"></i> 
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-														</label>
-														<div class="check"></div>
-													</li>
-													<li>
-														<input type="radio" id="p-option" name="selector4" onclick="setTimeout(function(){openCity('punctuality');},500)">
-														<label for="p-option">
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i> 
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-														</label>
-														<div class="check"><div class="inside"></div></div>
-													</li>
-													<li>
-														<input type="radio" id="q-option" name="selector4" onclick="setTimeout(function(){openCity('punctuality');},500)">
-														<label for="q-option">
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i> 
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-														</label>
-														<div class="check"><div class="inside"></div></div>
-													</li>
-													<li>
-														<input type="radio" id="r-option" name="selector4" onclick="setTimeout(function(){openCity('punctuality');},500)">
-														<label for="r-option">
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i> 
-														</label>
-														<div class="check"></div>
-													</li>
-													<li>
-														<input type="radio" id="s-option" name="selector4" onclick="setTimeout(function(){openCity('punctuality');},500)">
-														<label for="s-option">
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-														</label>
-														<div class="check"></div>
-													</li>
-												</ul>
-												<div class="clear"></div>
-											</div>	
-										</div>
-									</div>
-									<input type="button" onclick="openCity('punctuality')" value="Next"></button>
-									<input type="button" onclick="openCity('cleanliness')" style="background:grey" value="Previous"></button>
-									
-								</div>
-							</div>
-						</div>
-						<div id="punctuality" class="pricing tabcontent">
-					  	<div class="pricing-top blue-top">
-								<h3>Punctuality Rating</h3>
-							</div>
-							<div class="pricing-bottom two">
-								<div class="pricing-bottom-bottom">
-									<div class="content-wthree2">
-										<div class="grid-w3layouts1">
-											<div class="w3-agile1">
-												<label class="rating">Punctuality</label>
-												<ul>
-													<li>
-														<input type="radio" id="t-option" name="selector5" onclick="setTimeout(function(){openCity('feedback');},500)">
-														<label for="t-option">
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i> 
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-														</label>
-														<div class="check"></div>
-													</li>
-													<li>
-														<input type="radio" id="u-option" name="selector5" onclick="setTimeout(function(){openCity('feedback');},500)">
-														<label for="u-option">
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i> 
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-														</label>
-														<div class="check"><div class="inside"></div></div>
-													</li>
-													<li>
-														<input type="radio" id="v-option" name="selector5" onclick="setTimeout(function(){openCity('feedback');},500)">
-														<label for="v-option">
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i> 
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-														</label>
-														<div class="check"><div class="inside"></div></div>
-													</li>
-													<li>
-														<input type="radio" id="w-option" name="selector5" onclick="setTimeout(function(){openCity('feedback');},500)">
-														<label for="w-option">
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-															<i class="fa fa-star-o" aria-hidden="true"></i> 
-														</label>
-														<div class="check"></div>
-													</li>
-													<li>
-														<input type="radio" id="x-option" name="selector5" onclick="setTimeout(function(){openCity('feedback');},500)">
-														<label for="x-option">
-															<i class="fa fa-star-o" aria-hidden="true"></i>
-														</label>
-														<div class="check"></div>
-													</li>
-												</ul>
-												<div class="clear"></div>
-											</div>	
-										</div>
-									</div>
-									<input type="button" onclick="openCity('feedback')" value="Next"></button>
-									<input type="button" onclick="openCity('valofmoney')" style="background:grey" value="Previous"></button>
-									
-
-								</div>
-							</div>
-						</div>
-						<div id="feedback" class="pricing tabcontent">
-					  	<div class="pricing-top blue-top">
-								<h3>Feedback</h3>
-							</div>
-							<div class="pricing-bottom two">
-								<div class="pricing-bottom-bottom">
-									<div class="content-wthree2">
-										<div class="grid-w3layouts1">
-											<div class="w3-agile1">
-												<label class="rating">Your feedback</label>
-												
-													
-												<div class="clear" style="height:10px"></div>
-													<textarea rows="2" style="width:100%;max-width:100%;min-width:100%" id="feed1" placeholder="What did you like?"></textarea>
-													<textarea rows="2" style="width:100%;max-width:100%;min-width:100%" id="feed2" placeholder="What didn't you like?"></textarea>
-												<div class="clear" style="height:10px"></div>
-											</div>	
-										</div>
-									</div>
-									<input type="button" onclick="openCity('message')" value="Next"></button>
-									<input type="button" onclick="openCity('punctuality')" style="background:grey" style="background:grey" value="Previous"></button>
-									
-
-								</div>
-							</div>
-						</div>
-						<div id="message" class="pricing tabcontent">
-					  	<div class="pricing-top blue-top">
-								<h3>Message</h3>
-							</div>
-							<div class="pricing-bottom two">
-								<div class="pricing-bottom-bottom">
-									<div class="content-wthree2">
-										<div class="grid-w3layouts1">
-											<div class="w3-agile1">
-											<input type="text" id="name" placeholder="Your Name" style="width: 100%;height: 25px;">
-											<input type="text" id="email" placeholder="Your Email" style="width: 100%;height: 25px;">
-											<input type="number" id="phone" placeholder="Your Phone number" style="width: 100%;height: 25px;">
-												<label class="rating">Please enter your message</label>
-												
-													<textarea rows="4" style="width:100%;max-height:200px;max-width:100%;" id="message1" placeholder="Your message..."></textarea>
-												<div class="clear" style="height:10px"></div>
-											</div>	
-										</div>
-									</div>
-									<input type="submit" value="Submit Feedback"></button>
-									<input type="button" onclick="openCity('feedback')" style="background:grey" value="Previous"></button>
-									
-
-								</div>
-							</div>
-						</div>
+					</div>
 						
-						<div id="thankyou" class="pricing tabcontent">
-					  	<div class="pricing-top blue-top">
-								<h3>Thank you</h3>
-							</div>
-							<div class="pricing-bottom two">
-								<div class="pricing-bottom-bottom">
-									<div class="content-wthree2">
-										<div class="grid-w3layouts1">
-											<div class="w3-agile1">
-											
-												
-											
-												<label class="rating" style="padding-bottom: 30px;">Thank you for your review<br>Your Score is:</label>
-												<label id="result" style="border-radius:20px;padding:10px;border:4px black solid;"></label>
-													
-												<div class="clear" style="height:10px"></div>
+						<?php
+						$temp=0;
+							// for($i=0;$i<count($questions);++$i){
+								// print_r($questions);exit;
+								$categorynb=0;
+							for($i=0;$i<1000;$i++){
+								// print_r($questions[$i]);echo "<br>";
+								$qn=$questions[$i]['question_number'];
+								// echo $qn.'<br>'.$temp.'<br>';exit;
+								if($temp!=$qn){
+									$temp=$qn;
+									if($qn>1){
+										echo '</ul>
+												<div class="clear"></div>
 											</div>	
 										</div>
 									</div>
-									
-
+									<input type="button" onclick="openCity(\'q'.($qn).'\')" value="Next"></button>
+									<input type="button" onclick="openCity(\'q'.($qn-2).'\')" style="background:grey" value="Previous"></button>
 								</div>
 							</div>
-						</div>
+						</div>';
+									}
+								// echo $questions[$i]['sub_category'];exit;
+									echo '<div id="q'.($qn).'" class="pricing tabcontent">';
+									// if($categorynb!=$questions[$i]['category_id']){
+										$categorynb=$questions[$i]['category_id'];
+										echo '<div class="pricing-top blue-top">
+												<h3>'.$questions[$i]['category'] .
+										( empty($questions[$i]['sub_category']) ? '' : ' - '.$questions[$i]['sub_category'] ) .
+										'</h3>
+											</div>';
+									// }
+									echo '
+											<div class="pricing-bottom two">
+												<div class="pricing-bottom-bottom">
+													<div class="content-wthree2">
+														<div class="grid-w3layouts1">
+															<div class="w3-agile1">
+																<label class="rating">'.$questions[$i]['question'].'</label>
+																<ul>
+																';
+																
+									if($questions[$i]['input'] == 0)
+										echo '<li>
+											<input type="radio" id="o'.$i.'" name="s'.$qn.'">
+											<label for="o'.$i.'">
+												'.$questions[$i]['choice'].'
+											</label>
+											<div class="check"></div>
+										</li>';
+										else
+											echo '<li>
+													<input type="text" id="o'.$i.'" name="o'.$i.'" placeholder="'.( strlen($questions[$i]['choice'])==0 ? 'Your message here' : $questions[$i]['choice'] ).'" style="border: 0;padding: 10px;border-radius: 6px;float: left;margin-left: 45px;">
+												</li>';
+								}else{
+									if($questions[$i]['input'] == 0)
+										echo '<li>
+												<input type="radio" id="o'.$i.'" name="s'.$qn.'">
+												<label for="o'.$i.'">
+													'.$questions[$i]['choice'].'
+												</label>
+												<div class="check"></div>
+											</li>';
+									else
+										echo '<li>
+												<input type="text" id="o'.$i.'" name="o'.$i.'" placeholder="'.( strlen($questions[$i]['choice'])==0 ? 'Your message here' : $questions[$i]['choice'] ).'" style="border: 0;padding: 10px;border-radius: 6px;float: left;margin-left: 45px;">
+											</li>';
+								}
+							}
+							// foreach($questions as $k=>$v){
+								// echo $k.": ";print_r($v);echo "<br>";
+							// }
+							// exit;
+						?>
+						
 						</form>
                 </div>
             </div>
@@ -575,7 +256,7 @@ div[data-anim~=base] {
 	}
 
 	// Get the element with id="defaultOpen" and click on it
-	openCity('expectation');
+	openCity('q0');
 	
 	function completeAndRedirect(){
 		console.log('completeAndRedirect');
@@ -589,10 +270,10 @@ div[data-anim~=base] {
 		console.log($('#h-option').is(":checked"));
 		console.log($('#j-option').is(":checked"));
 		console.log($('#k-option').is(":checked"));
-		if($('#a-option').is(":checked"))expectation=6;
-		else if($('#b-option').is(":checked"))expectation=2;
-		else if($('#c-option').is(":checked"))expectation=10;
-		else expectation=0;
+		if($('#a-option').is(":checked"))introduction=6;
+		else if($('#b-option').is(":checked"))introduction=2;
+		else if($('#c-option').is(":checked"))introduction=10;
+		else introduction=0;
 			
 		if($('#d-option').is(":checked"))staff=10;
 		else if($('#e-option').is(":checked"))staff=8;
@@ -622,7 +303,7 @@ div[data-anim~=base] {
 		else if($('#x-option').is(":checked"))punctuality=2;
 		else punctuality=0;
 			
-		$.get("/inc/rating.php", { 'vals[]' : [expectation,staff,cleanliness,valofmoney,punctuality] , 'name': $('#name').val() , 'email': $('#email').val() , 'phone': $('#phone').val() , 'feedback1': $('#feed1').val() , 'feedback2': $('#feed2').val() , 'message': $('#message1').val() }
+		$.get("/inc/rating.php", { 'vals[]' : [introduction,staff,cleanliness,valofmoney,punctuality] , 'name': $('#name').val() , 'email': $('#email').val() , 'phone': $('#phone').val() , 'feedback1': $('#feed1').val() , 'feedback2': $('#feed2').val() , 'message': $('#message1').val() }
 				,function(result){
 					$('#result').text(result);
 					if(result<2) $('#result').css("background","white");
@@ -638,11 +319,6 @@ div[data-anim~=base] {
 	
 	</script>
 	
-	<!--copyright-->
-	<div class="w3ls-copyright">
-		<p>© Copyright <a href="http://www.165cteam.com" target="_blank">165&#176;C-team</a> 2018</p>
-	</div>
-	<!--//copyright-->
 </div>
 <script src="js/jquery.raccordion.js" type="text/javascript"></script>
 <script src="js/jquery.animation.easing.js" type="text/javascript"></script>

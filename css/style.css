@@ -61,7 +61,7 @@ label{
 }
 .content h1 {
     font-size: 4em;
-    color: #ffffff;
+    /* color: #ffffff; */
     text-align: center;
     font-weight: 400;
     text-transform: capitalize;
@@ -72,21 +72,28 @@ label{
 .wrapper {
     text-align: center;
 }
+.accordion-wrapper{
+	width:350px;	
+}
 .caption {
-    position: absolute;
+    /* position: absolute; */
     /*background: rgba(1, 1, 1, 0.4);*/
-    background-size: cover !important;
-    left: 0;
-    top: 0 !important;
+    /* background-size: cover !important; */
+    /* left: 0; */
+    /* top: 0 !important; */
     text-align: center;
-    width: 350px;
+    /* width: 350px; */
+	
+    width: 70%;
+    padding: 0 15%;
 }
 label.rating {
     color: #fff;
     font-size: 14px;
     letter-spacing: 0.5px;
-    width: 71%;
+    /* width: 71%; */
     padding-left: 1.5em;
+    padding-bottom: 30px;
     line-height: 24px;
     text-align: left!important;
     display: block;
@@ -161,7 +168,7 @@ input[type="submit"],input[type="button"]:hover {
     letter-spacing: 1px;
 }
 .pricing-bottom-bottom p {
-    color: #b7b7b7;
+    /* color: #b7b7b7; */
     font-size: 15px;
     letter-spacing: 0.5px;
     line-height: 30px;
