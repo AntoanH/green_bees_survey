@@ -180,8 +180,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             $($li).append($label);
                             $($li).append($div);
                         } else {
-                            $radio = $("<input type='radio' id='o" + $choice_number + "' choice_id='" + $choice['id'] + "' has_input='1' next_question='" + $next_question + "' name='s" + $question['question_number'] + "'>'");
-                            $input = $("<input type='text' id='o" + $choice_number + "' choice_id='" + $choice['id'] + "' name='s" + $question['question_number'] + "' placeholder='" + $choice['choice'] + "'>");
+                            $radio = $("<input type='radio'  id='o" + $choice_number + "' choice_id='" + $choice['id'] + "' has_input='1' next_question='" + $next_question + "' name='s" + $question['question_number'] + "'>'");
+                            $input = $("<input type='text' oninput='enableInput("+$choice_number+")' id='os" + $choice['id'] + "' choice_id='" + $choice['id'] + "' name='ss" + $question['question_number'] + "' placeholder='" + $choice['choice'] + "' style='border: 0;padding: 10px;border-radius: 6px;float: left;margin-left: 45px;'>");
                             $div = $("<div class='check'></div>");
                             //$label = $("<label for='o"+$choice_number+"'>"+$choice['choice']+"</label>");
                             $($li).append($radio);
@@ -193,6 +193,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                 }
 
+                function enableInput($choice_id) {
+					console.log($choice_id);
+					// $('#o'+$choice_id).attr("checked","");
+					$('#o'+$choice_id).attr("checked","checked");
+					
+				}
                 function addAnswer($choice_id) {
                     $answers.push($choice_id);
                 }
