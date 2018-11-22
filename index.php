@@ -17,11 +17,35 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			left join categories on questions.category_id=categories.id
 			left join relations on choices.id=relations.id_choice;";
 	if($res=$con->query($sql)){
+            $questions = [];
+            $question = [];
+            $choices = [];
+            $choice = [];
 		while($row = $res->fetch_assoc()){
 			// echo "ID: " . $row["ID"]. " - Name: " . $row["name"]. "<br>";
 			// print_r($row);echo "<br>";
 		// exit;
-			$questions[]=$row;
+                    $temp = "0";
+                    if($row['question_number'] != $temp) {
+                        $temp = $row['question_number'];
+                        if(count($question) > 0) {
+                            $qustions[] = $question;
+                        }
+                        if(count($choices) > 0) {
+                            $choices[] = $choice;
+                        }
+                        $question = [];
+                        $choices = [];
+                        $question['question_number'] = $row['question_number'];
+                        $question['question'] = $row['question'];
+                        $question['category_id'] = $row['category_id'];
+                        $question['category'] = $row['category'];
+                        $question['sub_category'] = $row['sub_category'];
+                    } else {
+                        $choice['choice'] = $row['choice'];
+                        $choice['input'] = $row['input'];
+                        $choice['next_question_number'] = $row['next_question_number']; 
+                    }
 		}
 		// exit;
                 if(isset($_GET['debug'])) {
@@ -29,6 +53,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     var_dump($questions);
                     echo "</pre>";
                 }
+                
+                
 	}else{
 		echo "ERROR ".$con->error;exit;
 	}
