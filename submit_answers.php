@@ -6,6 +6,7 @@ if(isset($_POST['results'])){
 	
 	$answers=$_POST['results'];
 	$answersstring='';
+		// print_r($answers['answers']);exit;
 	// print_r($answers);exit;
 	// foreach($answers as $k=>$v){
 		// if(!empty($answers[1])){
@@ -18,24 +19,28 @@ if(isset($_POST['results'])){
 		$current_question=$answers['current_question'];
 		
 		// if(!empty($answers[4])) $question_number=$answers[0];
-		if(!empty($answers['session_id'])) $session_id=$answers['session_id'];
+		if(strlen($answers['session_id']==10)) $session_id=$answers['session_id'];
 		else{
 			$session_id=generateRandomString();
 		
-			$sql="INSERT into sessions (`hash`,`question_number`,`company_name`,`completed`) values ('".$session_id."','".$question_number."','".$company."',".$completed.");";
-			$con->$query($sql);
+			$sql="INSERT into sessions (`hash`,`question_number`,`company_name`,`completed`) values ('".$session_id."','".$current_question."','".$company."',".$completed.");";
+			if($con->query($sql)){
+				
+			}else{
+				echo "Error0: ".$con->error;
+			}
 		}	
 		
-		
-		if($results[1]) $sflag=1;
-		foreach($answers[3] as $k=>$v){
+		// if($answers[1]) $sflag=1;
+		foreach($answers['answers'] as $k=>$v){
 			// print_r($v);exit;
 			$sql="INSERT into answers (`session_id`,`choice_id`,`input_value`) values ('".$session_id."','".$v[0]."','".$v[1]."');";
-		}
-		if($con->query($sql)){
-			echo "Inserted successfully";
-		}else{
-			echo $con->error;
+		
+			if($con->query($sql)){
+				echo "Inserted successfully";
+			}else{
+				echo "Error: ".$con->error;
+			}
 		}
 	// }
 	// print_r($answers);
