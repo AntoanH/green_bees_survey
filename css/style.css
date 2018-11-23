@@ -46,10 +46,6 @@ ul{
 	margin:0;
 	padding:0;
 }
-.wrapper {
-    text-align: center;
-}
-
 /*-- w3layouts --*/
 label{
 	margin:0;
@@ -62,28 +58,10 @@ label{
     /* color: #ffffff; */
     text-align: center;
     font-weight: 400;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
     font-family: 'Ubuntu', sans-serif;
     margin: 0 0 1.5em 0;
     letter-spacing: 7px;
-}
-.wrapper {
-    text-align: center;
-}
-.accordion-wrapper{
-	width:350px;	
-}
-.caption {
-    /* position: absolute; */
-    /*background: rgba(1, 1, 1, 0.4);*/
-    /* background-size: cover !important; */
-    /* left: 0; */
-    /* top: 0 !important; */
-    text-align: center;
-    /* width: 350px; */
-	
-    width: 70%;
-    padding: 0 15%;
 }
 label.rating {
     color: #fff;
@@ -166,7 +144,6 @@ input[type="submit"],input[type="button"]:hover {
     letter-spacing: 1px;
 }
 .pricing-bottom-bottom p {
-    /* color: #b7b7b7; */
     font-size: 15px;
     letter-spacing: 0.5px;
     line-height: 30px;
@@ -184,72 +161,12 @@ input[type="submit"],input[type="button"]:hover {
 .pricing-bottom-bottom {
     padding: 0 2em;
 }
-.buy-button {
-    margin: 0;
-    background: rgba(0, 0, 0, 0.65);
-}
-.buy-button a{
-    background: #fd5c63;
-    padding: .5em 2em;
-	border: solid 1px #fd5c63;
-    color: #fff;
-	transition: 0.5s all;
-	-webkit-transition: 0.5s all;
-	-moz-transition: 0.5s all;
-	-o-transition: 0.5s all;
-	-ms-transition: 0.5s all;
-	-webkit-appearance:none;
-}
-.buy-button a:hover{
-	background: none;
-	border: solid 1px #333;
-	color:#333;
-	text-decoration: none;
-}
-.buy-button a:focus{
-	outline:none;
-}
-.green-button a {
-    background: #5d9830;
-    border: solid 1px #5d9830;
-}
+
 .blue-button a{
 	background:#0099e5;
 	border: solid 1px #0099e5;
 }
-.yellow-button a{
-	background:#ff9800;
-	border: solid 1px #ff9800;
-}
-.pink-button a{
-	background:#e91e63;
-	border: solid 1px #e91e63;
-}
-.buy-button i {
-    font-size: 25px;
-    color: #fff;
-    font-weight: 100;
-    padding: 29px 10px;
-	display:inline-block;
-}
-.buy-button.green-button ul li {
-    display: inline-block;
-}
-.buy-button li:nth-child(1) i {
-    color: #2b2b2b!important;
-}
-.buy-button li:nth-child(2) i {
-    color: #4a4949!important;
-}
-.buy-button li:nth-child(3) i {
-    color: #777777!important;
-}
-.buy-button li:nth-child(4) i {
-    color: #afafaf!important;
-}
-.buy-button li:nth-child(5) i {
-    color: #d8d7d7!important;
-}
+
 /*-- //pricing --*/
 /*-- radio button --*/
 .grid-w3layouts1 ul li,.grid-w3layouts2 ul li{
@@ -266,7 +183,7 @@ ul li label {
     display: block;
     position: relative;
     font-weight: 300;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
     font-size: 14px;
     padding: 1px 0px 0px 53px;
     text-align: left;
@@ -323,23 +240,7 @@ input[type=radio]:checked ~ label{
 	color: #0099e5;
 }
 /*-- /radio button --*/
-.w3ls-copyright {
-    margin: 7em 0 0;
-    text-align: center;
-}
-.w3ls-copyright p {
-    color: #ffffff;
-    font-size: 1em;
-    margin: 0;
-    letter-spacing: 4px;
-}
-.w3ls-copyright p a{
-	color:#ffffff;
-	text-decoration:none;
-}
-.w3ls-copyright p a:hover{
-	text-decoration:underline;
-}
+
 /*-- responsive --*/
 @media(max-width:1680px){
 	.content {
@@ -360,7 +261,7 @@ input[type=radio]:checked ~ label{
 		letter-spacing: 4px;
 	}
 	.content{
-		padding: 4em 0 0;
+		padding: 4em 10em 0;
 	}
 	.w3ls-copyright p {
 		font-size: .9em;
@@ -392,9 +293,7 @@ input[type=radio]:checked ~ label{
 	.content {
 		padding: 3.5em 0;
 	}
-	.w3ls-copyright {
-		margin: 3em 0 0;
-	}
+
 }
 @media(max-width:800px){
 	.pricing-top i {
@@ -427,9 +326,7 @@ input[type=radio]:checked ~ label{
 	}
 }
 @media(max-width:600px){
-	.pricing-bottom-bottom h2 {
-		font-size: 1.4em;
-	}
+	
 	.caption {
 		width: 292px;
 	}
@@ -439,18 +336,12 @@ input[type=radio]:checked ~ label{
 	.two {
 		padding: 2.7em 0!important;
 	}
-	.w3ls-copyright p {
-		line-height: 30px;
-	}
 	.content {
 		padding: 3em 0;
 	}
 	.content h1 {
 		font-size: 2.5em;
 		letter-spacing: 3px;
-	}
-	.w3ls-copyright {
-		margin: 2em 0 0;
 	}
 	input[type="submit"] {
 		font-size: 15px;
@@ -461,9 +352,6 @@ input[type=radio]:checked ~ label{
 	.caption {
 		width: 277px;
 	}
-	.pricing-bottom-bottom h2 {
-		letter-spacing: 0.5px;
-	}
 	ul li label {
 		padding: 1px 0px 0px 40px;
 	}
@@ -472,11 +360,8 @@ input[type=radio]:checked ~ label{
 		left: 7px;
 	}
 	label.rating {
-		width: 100%;
+		/* width: 100%; */
 		padding-left: 0.7em;
-	}
-	.w3ls-copyright {
-		margin: 2em 2em 0;
 	}
 }
 @media(max-width:480px){	
@@ -493,102 +378,14 @@ input[type=radio]:checked ~ label{
 		width: 75.5%;
 		left: 57px;
 	}
-	.slide {
-		float: none;
-		height: auto !important;
-		width: 100%;
-	}
-	.slide-two-w3ls {
-		float: none;
-		left: 0%!important;
-		top: 30.8em;
-	}
+	
 	.pricing {
 		box-shadow: none;
-	}
-	.w3ls-copyright {
-		margin: 1.5em 1.8em 0;
 	}
 	.pricing-bottom {
 		padding: 3em 0em 0;
 	}
 }
-@media(max-width:440px){
-	.caption {
-		width: 82.7%;
-		left: 37px;
-	}
-}
-@media(max-width:414px){
-	.content h1 {
-		letter-spacing: 1px;
-	}
-	.pricing-top i {
-		font-size: 3em;
-	}
-	.pricing-top {
-		padding: 2em 0;
-	}
-	.buy-button i {
-		padding: 25px 10px;
-	}
-	.slide-two-w3ls {
-		top: 28em;
-	}
-	.caption {
-		width: 88%;
-		left: 24.4px;
-	}
-	.pricing-bottom-bottom h2 {
-		letter-spacing: 1px;
-		font-size: 1.3em;
-	}
-	.content {
-		padding: 2em 0;
-	}
-}
-@media(max-width:384px){
-	.caption {
-		width: 95.3%;
-		left: 9px;
-	}
-	.content h1 {
-		font-size: 2em;
-		letter-spacing: 1.5px;
-	}
-	.w3ls-copyright p {
-		letter-spacing: 1.5px;
-	}
-}
-@media(max-width:375px){
-	.slide {
-		width: 90%;
-		left: 5%!important;
-	}
-	.caption {
-		width: 100%;
-		left: 0px;
-	}
-	.w3ls-copyright p {
-		letter-spacing: 1px;
-	}
-}
-@media(max-width:320px){
-	.content h1 {
-		font-size: 1.8em;
-		letter-spacing: 0.55px;
-	}
-	.two {
-		padding: 2em 0!important;
-	}
-	.w3ls-copyright {
-		margin: 1.5em 1em 0;
-	}
-	.w3ls-copyright p {
-		letter-spacing: 0.5px;
-	}
-}
-/*-- //responsive --*/
 
 
 
@@ -638,3 +435,7 @@ input[type=radio]:checked ~ label{
 }
 
 .topright:hover {color: red;}
+
+.input_choices{
+	border: 0;padding: 10px;border-radius: 6px;float: left;margin-left: 45px;	
+}	
