@@ -31,7 +31,7 @@ if(isset($_POST['results'])){
 		}
 		
 		foreach($answers['answers'] as $k=>$v){
-			$sql="INSERT into answers (`session_id`,`question_number`, `choice_id`,`input_value`) values ('".$session_id_int."','".$v[1]."','".$v[0]."','".$v[2]."') ON DUPLICATE KEY UPDATE choice_id='".$v[0]."',input_value='".$v[2]."';";
+			$sql="INSERT into answers (`session_id`,`question_number`, `choice_id`,`input_value`) values ('".$session_id_int."','".$v[0]."','".$v[1]."','".$v[2]."') ON DUPLICATE KEY UPDATE choice_id='".$v[1]."',input_value='".$v[2]."';";
 			$con->query($sql);
 		}
 		echo $session_id;

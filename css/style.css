@@ -231,13 +231,13 @@ ul li .check::before {
     -webkit-transition: background 0.25s linear;
 }
 input[type=radio]:checked ~ .check {
-	border: 2px solid #0099e5;
+	border: 2px solid #0a4200;
 }
 input[type=radio]:checked ~ .check::before{
-	background: #0099e5;
+	background: #0a4200;
 }
 input[type=radio]:checked ~ label{
-	color: #0099e5;
+	color: #0a4200;
 }
 /*-- /radio button --*/
 
